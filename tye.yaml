@@ -1,0 +1,30 @@
+name: eBikeDapr
+extensions:
+- name: zipkin
+services:
+- name: frontend
+  project: src/Frontend/eShop.Web/eShop.Web.csproj
+  replicas: 2
+  bindings:
+  - port: 80
+- name: worker
+  project: worker/worker.csproj
+- name: kafka
+  image: bitnami/kafka:latest
+  env:
+    - name: KAFKA_CLIENT_USERS
+      value: 
+    - name: KAFKA_CLIENT_PASSWORDS
+      value:
+  bindings:
+    - port: 9092
+    - port: 9093
+- name: kafka-ui
+  image: provectuslabs/kafka-ui:latest
+  env:
+    - name: KAFKA_CLUSTERS_0_NAME
+      value: kafka
+    - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+      value: kafka:9092
+  bindings:
+    - port: 8080
