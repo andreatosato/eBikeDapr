@@ -1,0 +1,32 @@
+﻿@using eShop.Web.Data
+@using Dapr.Client
+
+<h3>eBike</h3>
+
+<EditForm OnSubmit="@SubmitAsync" class="form" Model="User">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <InputNumber @bind-Value="@User.Name" DisplayName="Name" id="name"></InputNumber>
+    </div>
+     <div class="form-group">
+        <label for="surname">Surname:</label>
+        <InputNumber @bind-Value="@User.Surname" DisplayName="Surname" id="surname"></InputNumber>
+    </div>
+    <divider></divider>
+    <div class="form-group">
+        <label for="bike-name">Bike Name:</label>
+        <InputText @bind-Value="@User.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
+    </div>
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</EditForm>
+
+@code {
+    [Inject]
+    public DaprClient DaprClient { get; set; }
+    public UserInsertViewModel User { get; set; } = new UserInsertViewModel();
+
+    public async Task SubmitAsync ()
+    {
+        
+    }
+}

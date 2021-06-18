@@ -1,0 +1,24 @@
+services:
+  eshop.web:
+    image: eBike/eshop.web
+    build:
+      context: .
+      dockerfile: src/Frontend/eShop.Web/Dockerfile
+
+  eshop.service.bikes:
+    image: eBike/eshop.service.bikes
+    build:
+      context: .
+      dockerfile: src/Services/eBike.Services.Bikes/Dockerfile
+
+  eshop.service.users:
+    image: eBike/eshop.service.users
+    build:
+      context: .
+      dockerfile: src/Services/eBike.Services.Users/Dockerfile
+
+  eshop.worker.processing:
+    image: eBike/eshop.worker.processing
+    build:
+      context: .
+      dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile

@@ -1,17 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>c783af39-0916-4d12-95d8-404741c1403e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
-    <UserSecretsId>ab180702-8d6b-47ce-acb7-2f2778f17d46</UserSecretsId>
 	<LangVersion>Preview</LangVersion>
-	<DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="1.2.0" />
-    <PackageReference Include="Dapr.Extensions.Configuration" Version="1.2.0" />
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
   </ItemGroup>
 
