@@ -5,6 +5,7 @@
     <UserSecretsId>6e75a745-8a0d-452c-9521-29233c759ec4</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+	<LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
