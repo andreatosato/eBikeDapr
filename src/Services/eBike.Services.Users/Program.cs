@@ -1,9 +1,10 @@
-using System;
 using Dapr.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddDapr();
@@ -19,15 +20,14 @@ if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
 }
 
-app.MapGet("/{id}", (int id, DaprClient dapr) => dapr.GetStateAsync<User>("user-state", $"user-{id}"));
+app.MapGet("/{id}", (int id, [FromServices] DaprClient dapr) => dapr.GetStateAsync<User>("user-state", $"user-{id}"));
 
-app.MapPost("/v1/User", async (User newUser, DaprClient dapr, IMongoCollection<User> userCollection) => 
-{
+app.MapPost("/v1/User", async (User newUser, [FromServices] DaprClient dapr, [FromServices] IMongoCollection<User> userCollection) => {
     await userCollection.FindOneAndReplaceAsync(t => t.Id == newUser.Id, newUser);
     await dapr.PublishEventAsync("pubsub", "user-insert", newUser);
 });
 
-app.MapPost("/v1/UserInsert", (User newUser, DaprClient dapr) => dapr.SaveStateAsync<User>("user-state", $"user-{newUser.Id}", newUser))
+app.MapPost("/v1/UserInsert", (User newUser, [FromServices] DaprClient dapr) => dapr.SaveStateAsync<User>("user-state", $"user-{newUser.Id}", newUser))
    .WithTopic("pubsub", "user-insert");
 
 await app.RunAsync();

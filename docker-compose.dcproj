@@ -6,7 +6,7 @@
     <ProjectGuid>11567b56-0f9e-4b87-9e5c-749136f5d531</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>eshop.web</DockerServiceName>
+    <DockerServiceName>ebike.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

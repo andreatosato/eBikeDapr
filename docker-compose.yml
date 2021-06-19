@@ -1,24 +1,135 @@
 services:
-  eshop.web:
-    image: eBike/eshop.web
-    build:
-      context: .
-      dockerfile: src/Frontend/eShop.Web/Dockerfile
+# App
+    ebike.web:
+        container_name: ebike.web
+        image: ${ROOT_REGISTRY}/ebike.web
+        build:
+          context: .
+          dockerfile: src/Frontend/eBike.Web/Dockerfile
 
-  eshop.service.bikes:
-    image: eBike/eshop.service.bikes
-    build:
-      context: .
-      dockerfile: src/Services/eBike.Services.Bikes/Dockerfile
+    ebike.aggregator.bff:
+        container_name: ebike.aggregator.bff
+        image: ${ROOT_REGISTRY}/ebike.aggregator.bff
+        build:
+            context: .
+            dockerfile: src/Aggregators/eBike.BFF.Aggregator/Dockerfile
 
-  eshop.service.users:
-    image: eBike/eshop.service.users
-    build:
-      context: .
-      dockerfile: src/Services/eBike.Services.Users/Dockerfile
+    ebike.service.bikes:
+        container_name: ebike.service.bikes
+        image: ${ROOT_REGISTRY}/ebike.service.bikes
+        build:
+          context: .
+          dockerfile: src/Services/eBike.Services.Bikes/Dockerfile
 
-  eshop.worker.processing:
-    image: eBike/eshop.worker.processing
-    build:
-      context: .
-      dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile
+    ebike.service.users:
+        container_name: ebike.service.users
+        image: ${ROOT_REGISTRY}/ebike.service.users
+        build:
+            context: .
+            dockerfile: src/Services/eBike.Services.Users/Dockerfile
+
+    ebike.worker.processing:
+        container_name: ebike.worker.processing
+        image: ${ROOT_REGISTRY}/ebike.worker.processing
+        build:
+            context: .
+            dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile
+# App
+
+# Container Dapperizzati
+    ebike.web-dapr:
+        container_name: ebike.web-dapr
+        image: "daprio/daprd:${DAPRD_TAG}"
+        network_mode: "service:ebike.web" # stessa rete del container da dapperizzare
+        command: ["./daprd",
+            "-app-id", "ebike.web",
+            "-app-port", "80",
+            "--enable-profiling", "",
+            "--log-level", "debug",
+            "-components-path", "/components",
+            "-config", "/configurations/config.yaml"
+          ]
+        volumes:
+            - "${DAPR_COMPONENTS_FOLDER}:/components"
+            - "${DAPR_CONFIG_FOLDER}:/configurations"
+        depends_on:
+            - ebike.web
+
+    ebike.service.bikes-dapr:
+        container_name: ebike.service.bikes-dapr
+        image: "daprio/daprd:${DAPRD_TAG}"
+        network_mode: "service:ebike.service.bikes" # stessa rete del container da dapperizzare
+        command: ["./daprd",
+            "-app-id", "ebike.service.bikes",
+            "-app-port", "80",
+            "--enable-profiling", "",
+            "--log-level", "debug",
+            "-components-path", "/components",
+            "-config", "/configurations/config.yaml"
+          ]
+        volumes:
+            - "${DAPR_COMPONENTS_FOLDER}:/components"
+            - "${DAPR_CONFIG_FOLDER}:/configurations"
+        depends_on:
+            - ebike.service.bikes
+
+    ebike.service.users-dapr:
+        container_name: ebike.service.users-dapr
+        image: "daprio/daprd:${DAPRD_TAG}"
+        network_mode: "service:ebike.service.users" # stessa rete del container da dapperizzare
+        command: ["./daprd",
+            "-app-id", "ebike.service.users",
+            "-app-port", "80",
+            "--enable-profiling", "",
+            "--log-level", "debug",
+            "-components-path", "/components",
+            "-config", "/configurations/config.yaml"
+          ]
+        volumes:
+            - "${DAPR_COMPONENTS_FOLDER}:/components"
+            - "${DAPR_CONFIG_FOLDER}:/configurations"
+        depends_on:
+            - ebike.service.users
+
+    ebike.worker.processing-dapr:
+        container_name: ebike.worker.processing-dapr
+        image: "daprio/daprd:${DAPRD_TAG}"
+        network_mode: "service:ebike.worker.processing" # stessa rete del container da dapperizzare
+        command: ["./daprd",
+            "-app-id", "ebike.worker.processing",
+            "-app-port", "80",
+            "--enable-profiling", "",
+            "--log-level", "debug",
+            "-components-path", "/components",
+            "-config", "/configurations/config.yaml"
+          ]
+        volumes:
+            - "${DAPR_COMPONENTS_FOLDER}:/components"
+            - "${DAPR_CONFIG_FOLDER}:/configurations"
+        depends_on:
+            - ebike.worker.processing
+
+    ebike.aggregator.bff-dapr:
+        container_name: ebike.aggregator.bff-dapr
+        image: "daprio/daprd:${DAPRD_TAG}"
+        network_mode: "service:ebike.aggregator.bff" # stessa rete del container da dapperizzare
+        command: ["./daprd",
+            "-app-id", "ebike.aggregator.bff",
+            "-app-port", "80",
+            "--enable-profiling", "",
+            "--log-level", "debug",
+            "-components-path", "/components",
+            "-config", "/configurations/config.yaml"
+          ]
+        volumes:
+            - "${DAPR_COMPONENTS_FOLDER}:/components"
+            - "${DAPR_CONFIG_FOLDER}:/configurations"
+        depends_on:
+            - ebike.aggregator.bff
+# Container Dapperizzati
+
+# Services
+# Services
+
+# Observability
+# Observability

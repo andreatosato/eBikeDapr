@@ -4,15 +4,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
-    <UserSecretsId>ab180702-8d6b-47ce-acb7-2f2778f17d46</UserSecretsId>
-	<LangVersion>Preview</LangVersion>
-	<DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapr.AspNetCore" Version="1.2.0" />
-    <PackageReference Include="Dapr.Extensions.Configuration" Version="1.2.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.38.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
+
+    <ItemGroup>
+	    <Protobuf Include="Protos\bikes.proto" GrpcServices="Client" />
+    </ItemGroup>
 
 </Project>

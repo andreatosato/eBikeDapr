@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "eBike.Services.Bikes";
+
+package bikes;
+
+service BikeEndpoint {
+  rpc CreateOrUpdate (BikeRequest) returns (BikeReply);
+}
+
+// The request message containing the user's name.
+message BikeRequest {
+  string BikeId = 1;
+  string Name = 2;
+  double Latitude = 3;
+  double Longitude = 4;
+  string UserId = 5;
+}
+
+enum Operation {
+	Create = 0;
+	Update = 1;
+	Error = 2;
+}
+
+message BikeReply {
+  string BikeId = 1;
+  Operation OperationResult = 2;
+}
