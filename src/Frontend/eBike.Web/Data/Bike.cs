@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace eBike.Web.Data
 {
@@ -9,18 +10,24 @@ namespace eBike.Web.Data
         public double Latitude { get; set; }
     }
 
-    public class UserBaseViewModel
+    public class UserViewModel
     {
+        public Guid UserId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
     }
 
-    public class UserInsertViewModel : UserBaseViewModel
+    public class BaseViewModel
+    {
+        public UserViewModel User { get; set; } = new();
+    }
+
+    public class UserInsertViewModel : BaseViewModel
     {
         public BikeViewModel Bike { get; set; } = new();
     }
 
-    public class UserReadViewModel : UserBaseViewModel
+    public class UserReadViewModel : BaseViewModel
     {
         public List<BikeViewModel> Bikes { get; set; } = new();
     }

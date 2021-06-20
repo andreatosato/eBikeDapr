@@ -42,7 +42,7 @@ services:
         image: "daprio/daprd:${DAPRD_TAG}"
         network_mode: "service:ebike.web" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "ebike.web",
+            "-app-id", "${APPID_WEB}",
             "-app-port", "80",
             "--enable-profiling", "",
             "--log-level", "debug",
@@ -54,13 +54,21 @@ services:
             - "${DAPR_CONFIG_FOLDER}:/configurations"
         depends_on:
             - ebike.web
+        deploy:
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 100M
+            reservations:
+              cpus: '0.25'
+              memory: 50M
 
     ebike.service.bikes-dapr:
         container_name: ebike.service.bikes-dapr
         image: "daprio/daprd:${DAPRD_TAG}"
         network_mode: "service:ebike.service.bikes" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "ebike.service.bikes",
+            "-app-id", "${APPID_BIKES}",
             "-app-port", "80",
             "--enable-profiling", "",
             "--log-level", "debug",
@@ -72,13 +80,21 @@ services:
             - "${DAPR_CONFIG_FOLDER}:/configurations"
         depends_on:
             - ebike.service.bikes
+        deploy:
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 100M
+            reservations:
+              cpus: '0.25'
+              memory: 50M
 
     ebike.service.users-dapr:
         container_name: ebike.service.users-dapr
         image: "daprio/daprd:${DAPRD_TAG}"
         network_mode: "service:ebike.service.users" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "ebike.service.users",
+            "-app-id", "${APPID_USERS}",
             "-app-port", "80",
             "--enable-profiling", "",
             "--log-level", "debug",
@@ -90,13 +106,21 @@ services:
             - "${DAPR_CONFIG_FOLDER}:/configurations"
         depends_on:
             - ebike.service.users
+        deploy:
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 100M
+            reservations:
+              cpus: '0.25'
+              memory: 50M
 
     ebike.worker.processing-dapr:
         container_name: ebike.worker.processing-dapr
         image: "daprio/daprd:${DAPRD_TAG}"
         network_mode: "service:ebike.worker.processing" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "ebike.worker.processing",
+            "-app-id", "${APPID_PROCESSING}",
             "-app-port", "80",
             "--enable-profiling", "",
             "--log-level", "debug",
@@ -108,13 +132,21 @@ services:
             - "${DAPR_CONFIG_FOLDER}:/configurations"
         depends_on:
             - ebike.worker.processing
+        deploy:
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 100M
+            reservations:
+              cpus: '0.25'
+              memory: 50M
 
     ebike.aggregator.bff-dapr:
         container_name: ebike.aggregator.bff-dapr
         image: "daprio/daprd:${DAPRD_TAG}"
         network_mode: "service:ebike.aggregator.bff" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "ebike.aggregator.bff",
+            "-app-id", "${APPID_AGGREGATOR}",
             "-app-port", "80",
             "--enable-profiling", "",
             "--log-level", "debug",
@@ -126,10 +158,29 @@ services:
             - "${DAPR_CONFIG_FOLDER}:/configurations"
         depends_on:
             - ebike.aggregator.bff
+        deploy:
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 100M
+            reservations:
+              cpus: '0.25'
+              memory: 50M
 # Container Dapperizzati
 
 # Services
+    redis:
+        container_name: redis
+        image: redis:alpine
+        ports:
+        - "6379:6379"
 # Services
 
 # Observability
+    zipkin:
+        container_name: zipkin
+        image: openzipkin/zipkin-slim
+        ports:
+        - "9411:9411"
+
 # Observability

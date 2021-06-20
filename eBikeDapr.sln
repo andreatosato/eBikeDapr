@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A7F14B2-1CE5-4BCB-92F8-CCBFCB18679C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.env = .env
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.Services.Users", "src\Services\eBike.Services.Users\eBike.Services.Users.csproj", "{373A4670-03EE-49D4-8E21-9D9F6A032CDA}"
@@ -30,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.Commons", "src\Common
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aggregators", "Aggregators", "{DE8AAF50-ACC7-4BA7-85B3-98FB92115379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBike.BFF.Aggregator", "src\Aggregators\eBike.BFF.Aggregator\eBike.BFF.Aggregator.csproj", "{D2CD1DF0-69BF-498C-9D97-DC8283DD167F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.BFF.Aggregator", "src\Aggregators\eBike.BFF.Aggregator\eBike.BFF.Aggregator.csproj", "{D2CD1DF0-69BF-498C-9D97-DC8283DD167F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

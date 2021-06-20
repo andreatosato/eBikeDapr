@@ -8,19 +8,19 @@
 
 <h3>eBike</h3>
 
-<EditForm OnSubmit="@SubmitAsync" class="form" Model="User">
+<EditForm OnSubmit="@SubmitAsync" class="form" Model="Model">
     <div class="form-group">
         <label for="name">Name:</label>
-        <InputText @bind-Value="@User.Name" DisplayName="Name" id="name"></InputText>
+        <InputText @bind-Value="@Model.User.Name" DisplayName="Name" id="name"></InputText>
     </div>
      <div class="form-group">
         <label for="surname">Surname:</label>
-        <InputText @bind-Value="@User.Surname" DisplayName="Surname" id="surname"></InputText>
+        <InputText @bind-Value="@Model.User.Surname" DisplayName="Surname" id="surname"></InputText>
     </div>
     <divider></divider>
     <div class="form-group">
         <label for="bike-name">Bike Name:</label>
-        <InputText @bind-Value="@User.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
+        <InputText @bind-Value="@Model.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
     </div>
     <button type="submit" class="btn btn-primary">Confirm</button>
 </EditForm>
@@ -28,7 +28,7 @@
 @code {
     [Inject]
     public DaprClient DaprClient { get; set; }
-    public UserInsertViewModel User { get; set; } = new UserInsertViewModel();
+    public UserInsertViewModel Model { get; set; } = new UserInsertViewModel();
 
     private WindowNavigatorGeolocation geolocationWrapper;
     private GeolocationPosition currentPosition;
@@ -47,13 +47,15 @@
             TimeoutTimeSpan = TimeSpan.FromMinutes(1)
         })).Location;
 
-        User.Bike.Longitude = currentPosition.Coords.Longitude;
-        User.Bike.Latitude = currentPosition.Coords.Latitude;
+        Model.Bike.Longitude = currentPosition.Coords.Longitude;
+        Model.Bike.Latitude = currentPosition.Coords.Latitude;
 
-        var request = DaprClient.CreateInvokeMethodRequest("ebike.aggregator.bff", "/v1/Bikes/new-user-bike");
-        request.Content = JsonContent.Create(User);
-       
+        var appIdAggregator = Environment.GetEnvironmentVariable("APPID_AGGREGATOR");
+        var request = DaprClient.CreateInvokeMethodRequest(appIdAggregator, "/v1/Bikes/new-user-bike");
+        request.Content = JsonContent.Create(Model);
+
         var response = await DaprClient.InvokeMethodWithResponseAsync(request);
-        var r = response.Content.ReadFromJsonAsync<AggregatorResponseUserBike>();
+        var r = await response.Content.ReadFromJsonAsync<AggregatorResponseUserBike>();
+        Model.User.UserId = Guid.Parse(r.UserId);
     }
 }
