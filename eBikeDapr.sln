@@ -33,6 +33,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aggregators", "Aggregators"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.BFF.Aggregator", "src\Aggregators\eBike.BFF.Aggregator\eBike.BFF.Aggregator.csproj", "{D2CD1DF0-69BF-498C-9D97-DC8283DD167F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{A03A8CC4-7C9D-4F19-A624-7C33FDB401B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{F0C0E4F3-49EB-4E96-86F7-571D1B45A21A}"
+	ProjectSection(SolutionItems) = preProject
+		dapr\components\redis.yaml = dapr\components\redis.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +85,7 @@ Global
 		{433EE031-1A4E-498D-A83C-B8A1E120C277} = {5176A140-6AB7-40F3-8C62-D0D625C02B0A}
 		{B859BD5E-7218-44AE-B1C4-EE933CB14BF4} = {DD771A31-A5B1-4808-8442-11166E255CDE}
 		{D2CD1DF0-69BF-498C-9D97-DC8283DD167F} = {DE8AAF50-ACC7-4BA7-85B3-98FB92115379}
+		{F0C0E4F3-49EB-4E96-86F7-571D1B45A21A} = {A03A8CC4-7C9D-4F19-A624-7C33FDB401B4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9672F594-EA85-4A14-B2F9-408BF5F15022}

@@ -13,6 +13,9 @@ services:
         build:
             context: .
             dockerfile: src/Aggregators/eBike.BFF.Aggregator/Dockerfile
+        environment:
+            APPID_USERS: ${APPID_USERS}
+            APPID_BIKES: ${APPID_BIKES}
 
     ebike.service.bikes:
         container_name: ebike.service.bikes
@@ -20,6 +23,9 @@ services:
         build:
           context: .
           dockerfile: src/Services/eBike.Services.Bikes/Dockerfile
+        environment:
+            ConnectionString : ${MONGO_CONNECTIONSTRING}
+            PUBSUB_NAME: ${PUBSUB_NAME}
 
     ebike.service.users:
         container_name: ebike.service.users
@@ -27,6 +33,10 @@ services:
         build:
             context: .
             dockerfile: src/Services/eBike.Services.Users/Dockerfile
+        environment:
+            ConnectionString : ${MONGO_CONNECTIONSTRING}
+            PUBSUB_NAME: ${PUBSUB_NAME}
+            USER_STATE_NAME: ${USER_STATE_NAME}
 
     ebike.worker.processing:
         container_name: ebike.worker.processing
@@ -59,9 +69,6 @@ services:
             limits:
               cpus: '0.50'
               memory: 100M
-            reservations:
-              cpus: '0.25'
-              memory: 50M
 
     ebike.service.bikes-dapr:
         container_name: ebike.service.bikes-dapr
@@ -85,9 +92,6 @@ services:
             limits:
               cpus: '0.50'
               memory: 100M
-            reservations:
-              cpus: '0.25'
-              memory: 50M
 
     ebike.service.users-dapr:
         container_name: ebike.service.users-dapr
@@ -111,9 +115,6 @@ services:
             limits:
               cpus: '0.50'
               memory: 100M
-            reservations:
-              cpus: '0.25'
-              memory: 50M
 
     ebike.worker.processing-dapr:
         container_name: ebike.worker.processing-dapr
@@ -137,9 +138,6 @@ services:
             limits:
               cpus: '0.50'
               memory: 100M
-            reservations:
-              cpus: '0.25'
-              memory: 50M
 
     ebike.aggregator.bff-dapr:
         container_name: ebike.aggregator.bff-dapr
@@ -163,9 +161,7 @@ services:
             limits:
               cpus: '0.50'
               memory: 100M
-            reservations:
-              cpus: '0.25'
-              memory: 50M
+
 # Container Dapperizzati
 
 # Services
@@ -174,6 +170,21 @@ services:
         image: redis:alpine
         ports:
         - "6379:6379"
+
+    mongodb:
+        container_name: mongodb
+        image: mongo:latest
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: dapr
+          MONGO_INITDB_ROOT_PASSWORD: daprPassword
+        ports:
+        - 27017:27017
+        restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 750m
 # Services
 
 # Observability

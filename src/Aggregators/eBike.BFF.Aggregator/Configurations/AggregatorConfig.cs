@@ -5,8 +5,8 @@ namespace eBike.BFF.Aggregator
 {
     public record AggregatorConfig ()
     {
-        public string BikeAppId { get; set; }
-        public string UserAppId { get; set; }
+        public string APPID_BIKES { get; set; }
+        public string APPID_USERS { get; set; }
     }
 
     public static class AggregatorConfigExtension
@@ -15,8 +15,8 @@ namespace eBike.BFF.Aggregator
         {
             services.AddOptions<AggregatorConfig>()
                 .Configure((settings) => {
-                    settings.BikeAppId = Environment.GetEnvironmentVariable("BikeAppId");
-                    settings.UserAppId = Environment.GetEnvironmentVariable("UserAppId");
+                    settings.APPID_BIKES = Environment.GetEnvironmentVariable("APPID_BIKES");
+                    settings.APPID_USERS = Environment.GetEnvironmentVariable("APPID_USERS");
                 });
             return services;
         }
