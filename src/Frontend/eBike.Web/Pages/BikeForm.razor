@@ -22,6 +22,14 @@
         <label for="bike-name">Bike Name:</label>
         <InputText @bind-Value="@Model.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
     </div>
+    <div class="form-group">
+        <label for="bike-latitude">Bike Latitude:</label>
+        <InputNumber @bind-Value="@Model.Bike.Latitude" DisplayName="Bike Latitude" id="bike-latitude"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label for="bike-longitude">Bike Longitude:</label>
+        <InputNumber @bind-Value="@Model.Bike.Longitude" DisplayName="Bike Longitude" id="bike-longitude"></InputNumber>
+    </div>
     <button type="submit" class="btn btn-primary">Confirm</button>
 </EditForm>
 
@@ -37,19 +45,26 @@
         var navigator = await window.Navigator();
         geolocationWrapper = navigator.Geolocation;
     }
+    
+    protected override async Task OnAfterRenderAsync (bool firstRender)
+    {
+        if (!firstRender) {
+            if(currentPosition == null) {
+                currentPosition = (await geolocationWrapper.GetCurrentPosition(new PositionOptions()
+                {
+                    EnableHighAccuracy = true,
+                    MaximumAgeTimeSpan = TimeSpan.FromHours(1),
+                    TimeoutTimeSpan = TimeSpan.FromMinutes(1)
+                })).Location;
+                Model.Bike.Longitude = currentPosition.Coords.Longitude;
+                Model.Bike.Latitude = currentPosition.Coords.Latitude;
+                this.StateHasChanged();   
+            }
+        }
+    }
 
     public async Task SubmitAsync ()
     {
-        currentPosition = (await geolocationWrapper.GetCurrentPosition(new PositionOptions()
-        {
-            EnableHighAccuracy = true,
-            MaximumAgeTimeSpan = TimeSpan.FromHours(1),
-            TimeoutTimeSpan = TimeSpan.FromMinutes(1)
-        })).Location;
-
-        Model.Bike.Longitude = currentPosition.Coords.Longitude;
-        Model.Bike.Latitude = currentPosition.Coords.Latitude;
-
         var appIdAggregator = Environment.GetEnvironmentVariable("APPID_AGGREGATOR");
         var request = DaprClient.CreateInvokeMethodRequest(appIdAggregator, "/v1/Bikes/new-user-bike");
         request.Content = JsonContent.Create(Model);

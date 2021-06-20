@@ -72,5 +72,15 @@ namespace eBike.Services.Bikes.Services
             }
             return response;
         }
+
+        public override Task<ListTopicSubscriptionsResponse> ListTopicSubscriptions (Empty request, ServerCallContext context)
+        {
+            return base.ListTopicSubscriptions(request, context);
+        }
+
+        public override Task<TopicEventResponse> OnTopicEvent (TopicEventRequest request, ServerCallContext context)
+        {
+            return base.OnTopicEvent(request, context);
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace eBike.Services.Bikes
         public void ConfigureServices (IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddDaprClient();
             services.AddScoped<IMongoCollection<BikeEntity>>((sp) => {
                 var client = new MongoClient(Environment.GetEnvironmentVariable("ConnectionString"));
                 return client.GetDatabase("Bikes").GetCollection<BikeEntity>("BikesCollection");

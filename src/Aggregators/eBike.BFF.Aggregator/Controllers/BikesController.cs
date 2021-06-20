@@ -43,7 +43,7 @@ namespace eBike.BFF.Aggregator.Controllers
                 Longitude = userBike.Bike.Longitude
             };
 
-            var reply = await daprClient.InvokeMethodGrpcAsync<BikeRequest, BikeReply>(aggregatorConfig.APPID_USERS, "CreateOrUpdate", request);
+            var reply = await daprClient.InvokeMethodGrpcAsync<BikeRequest, BikeReply>(aggregatorConfig.APPID_BIKES, "CreateOrUpdate", request);
 
             return reply.OperationResult == Operation.Create
                 ? StatusCode(StatusCodes.Status201Created, new { UserId = userServiceViewModel.Id, reply.BikeId })

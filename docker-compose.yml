@@ -75,7 +75,7 @@ services:
         network_mode: "service:ebike.service.bikes" # stessa rete del container da dapperizzare
         command: ["./daprd",
             "-app-id", "${APPID_BIKES}",
-            "-app-port", "80",
+            "-app-port", "5050",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
