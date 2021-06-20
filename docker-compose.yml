@@ -54,14 +54,13 @@ services:
         command: ["./daprd",
             "-app-id", "${APPID_WEB}",
             "-app-port", "80",
-            "--enable-profiling", "",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
         volumes:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
-            - "${DAPR_CONFIG_FOLDER}:/configurations"
+            - "./dapr/configurations/:/configurations"
         depends_on:
             - ebike.web
         deploy:
@@ -77,14 +76,13 @@ services:
         command: ["./daprd",
             "-app-id", "${APPID_BIKES}",
             "-app-port", "80",
-            "--enable-profiling", "",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
         volumes:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
-            - "${DAPR_CONFIG_FOLDER}:/configurations"
+            - "./dapr/configurations/:/configurations"
         depends_on:
             - ebike.service.bikes
         deploy:
@@ -100,14 +98,13 @@ services:
         command: ["./daprd",
             "-app-id", "${APPID_USERS}",
             "-app-port", "80",
-            "--enable-profiling", "",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
         volumes:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
-            - "${DAPR_CONFIG_FOLDER}:/configurations"
+            - "./dapr/configurations/:/configurations"
         depends_on:
             - ebike.service.users
         deploy:
@@ -123,14 +120,13 @@ services:
         command: ["./daprd",
             "-app-id", "${APPID_PROCESSING}",
             "-app-port", "80",
-            "--enable-profiling", "",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
         volumes:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
-            - "${DAPR_CONFIG_FOLDER}:/configurations"
+            - "./dapr/configurations/:/configurations"
         depends_on:
             - ebike.worker.processing
         deploy:
@@ -146,14 +142,13 @@ services:
         command: ["./daprd",
             "-app-id", "${APPID_AGGREGATOR}",
             "-app-port", "80",
-            "--enable-profiling", "",
             "--log-level", "debug",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
         volumes:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
-            - "${DAPR_CONFIG_FOLDER}:/configurations"
+            - "./dapr/configurations/:/configurations"
         depends_on:
             - ebike.aggregator.bff
         deploy:
@@ -170,6 +165,7 @@ services:
         image: redis:alpine
         ports:
         - "6379:6379"
+        command: redis-server --requirepass redisPassword
 
     mongodb:
         container_name: mongodb
@@ -180,11 +176,6 @@ services:
         ports:
         - 27017:27017
         restart: always
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 750m
 # Services
 
 # Observability

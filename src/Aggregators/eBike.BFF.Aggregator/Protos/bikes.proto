@@ -4,10 +4,6 @@ option csharp_namespace = "eBike.Services.Bikes";
 
 package bikes;
 
-service BikeEndpoint {
-  rpc CreateOrUpdate (BikeRequest) returns (BikeReply);
-}
-
 // The request message containing the user's name.
 message BikeRequest {
   string BikeId = 1;

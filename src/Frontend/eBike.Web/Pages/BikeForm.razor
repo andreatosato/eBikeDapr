@@ -55,7 +55,9 @@
         request.Content = JsonContent.Create(Model);
 
         var response = await DaprClient.InvokeMethodWithResponseAsync(request);
-        var r = await response.Content.ReadFromJsonAsync<AggregatorResponseUserBike>();
-        Model.User.UserId = Guid.Parse(r.UserId);
+        if (response.IsSuccessStatusCode) {
+            var r = await response.Content.ReadFromJsonAsync<AggregatorResponseUserBike>();
+            Model.User.UserId = Guid.Parse(r.UserId);     
+        }
     }
 }

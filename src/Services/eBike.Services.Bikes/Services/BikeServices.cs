@@ -1,16 +1,18 @@
+using Dapr.AppCallback.Autogen.Grpc.v1;
 using Dapr.Client;
+using Dapr.Client.Autogen.Grpc.v1;
 using eBike.Commons.Events;
 using eBike.Services.Bikes.Entities;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
-using static eBike.Services.Bikes.BikeEndpoint;
 
 namespace eBike.Services.Bikes.Services
 {
-    public class BikeServices : BikeEndpointBase
+    public class BikeServices : AppCallback.AppCallbackBase
     {
         private readonly ILogger<BikeServices> _logger;
         private readonly DaprClient daprClient;
@@ -23,7 +25,8 @@ namespace eBike.Services.Bikes.Services
             this.bikeCollection = bikeCollection ?? throw new System.ArgumentNullException(nameof(bikeCollection));
         }
 
-        public override async Task<BikeReply> CreateOrUpdate (BikeRequest request, ServerCallContext context)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        private async Task<BikeReply> CreateOrUpdate (BikeRequest request, ServerCallContext context)
         {
             var bikeId = Guid.Parse(request.BikeId);
 
@@ -55,6 +58,19 @@ namespace eBike.Services.Bikes.Services
                 BikeId = bikeCreated.Id.ToString(),
                 OperationResult = exists == 0 ? Operation.Create : Operation.Update
             };
+        }
+
+        public override async Task<InvokeResponse> OnInvoke (InvokeRequest request, ServerCallContext context)
+        {
+            var response = new InvokeResponse();
+            switch (request.Method) {
+                case "CreateOrUpdate":
+                    var input = request.Data.Unpack<BikeRequest>();
+                    var output = await CreateOrUpdate(input, context);
+                    response.Data = Any.Pack(output);
+                    break;
+            }
+            return response;
         }
     }
 }
