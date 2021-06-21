@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using eBike.Commons.Events
+<h3>NotificationComponent</h3>
+
+
+@if (Events.Count > 0)
+{
+    <table class="table">
+        @foreach (var e in Events)
+        {
+            <tr>
+                <td>@(e.Id)</td>
+                <td>@(e.Name)</td>
+                <td>@(e.Status)</td>
+                <td>@(e.Latitude)</td>
+                <td>@(e.Longitude)</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+
+    public List<BikeEvent> Events { get; set; } = new List<BikeEvent>();
+    public List<UserEvent> UserEvents { get; set; } = new List<UserEvent>();
+    protected override async Task OnInitializedAsync()
+    {
+        var url = "http://ebike.aggregator.bff/notification";
+        var connection = new HubConnectionBuilder()
+            .WithUrl(url)
+            .WithAutomaticReconnect()
+            .Build();
+        connection.On<BikeEvent>("bike", OnBikeStatus);
+        connection.On<UserEvent>("user-insert", OnUserStatus);
+        connection.On<UserEvent>("user-update", OnUserStatus);
+        await connection.StartAsync();
+    }
+
+    private void OnBikeStatus(BikeEvent @event)
+    {
+        Events.Add(@event);
+        StateHasChanged();
+    }
+
+    private void OnUserStatus(UserEvent @event)
+    {
+        UserEvents.Add(@event);
+        StateHasChanged();
+    }
+}

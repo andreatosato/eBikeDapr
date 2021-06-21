@@ -22,6 +22,10 @@ namespace eBike.Services.Bikes
                 var client = new MongoClient(Environment.GetEnvironmentVariable("ConnectionString"));
                 return client.GetDatabase("Bikes").GetCollection<BikeEntity>("BikesCollection");
             });
+            services.AddScoped((sp) => {
+                var client = new MongoClient(Environment.GetEnvironmentVariable("ConnectionString"));
+                return client.GetDatabase("Bikes").GetCollection<BikeAggregation>("BikesAggregateCollection");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -44,6 +44,9 @@ services:
         build:
             context: .
             dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile
+        environment:
+            ConnectionString : ${MONGO_CONNECTIONSTRING}
+            AZURE_MAPS_KEY: ${AZURE_MAPS_KEY}
 # App
 
 # Container Dapperizzati
@@ -177,8 +180,8 @@ services:
         ports:
         - 27017:27017
         restart: unless-stopped
-        volumes:
-            - ./mongodb/database:/data/db
+        #volumes:
+        #    - ./mongodb/database:/data/db
 # Services
 
 # Observability

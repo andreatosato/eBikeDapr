@@ -4,6 +4,7 @@ namespace eBike.Commons.Events
 {
     public class BikeEvent
     {
+        public DateTime EventDate { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Guid UserId { get; set; }

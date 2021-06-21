@@ -1,0 +1,37 @@
+﻿@page "/aggregator"
+@using System.Net.Http.Json
+@using eBike.Web.Data
+@using Dapr.Client
+
+<h3>BikeAggregator</h3>
+
+<table class="table table-striped">
+ <thead class="thead-dark">
+    <tr>
+      <th scope="col">Country</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+    <tbody>
+        @foreach(var a in Aggregator) {
+            <tr>
+                <td>@a.Country</td>
+                <td>@a.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    [Inject]
+    public DaprClient DaprClient { get; set; }
+    public List<AggregatorBikes> Aggregator { get; set; } = new List<AggregatorBikes>();
+
+    protected override async Task OnInitializedAsync ()
+    {
+        var appIdAggregator = Environment.GetEnvironmentVariable("APPID_AGGREGATOR");
+        Aggregator = await DaprClient.InvokeMethodAsync<List<AggregatorBikes>>(HttpMethod.Get, appIdAggregator, $"/v1/Bikes/aggregator");
+        this.StateHasChanged();
+    }
+}

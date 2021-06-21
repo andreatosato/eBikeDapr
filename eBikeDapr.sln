@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DDE1A6D9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{FF30F5B2-5539-41E7-8C69-FB59DF942223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBike.Workers.Processing.Tests", "tests\eBike.Workers.Processing.Tests\eBike.Workers.Processing.Tests.csproj", "{EDD34F27-AC39-4F0F-86D9-D9350927B783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.Workers.Processing.Tests", "tests\eBike.Workers.Processing.Tests\eBike.Workers.Processing.Tests.csproj", "{EDD34F27-AC39-4F0F-86D9-D9350927B783}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

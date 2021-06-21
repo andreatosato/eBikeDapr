@@ -23,3 +23,28 @@ message BikeReply {
   string BikeId = 1;
   Operation OperationResult = 2;
 }
+
+message UserRequest {
+	string UserId = 1;
+}
+
+message UserBikeResponse {
+  string BikeId = 1;
+  string Name = 2;
+  double Latitude = 3;
+  double Longitude = 4;
+  string UserId = 5;
+}
+
+message UserBikesResponse {
+	repeated UserBikeResponse Response = 1;
+}
+
+message BikeAggregatorResponse {
+    string Country = 1;
+    int32 Count = 2;
+}
+
+message BikeAggregatorsResponse {
+	repeated BikeAggregatorResponse Countries = 1;
+}

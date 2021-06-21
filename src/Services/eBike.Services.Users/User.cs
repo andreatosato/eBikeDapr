@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Collections.Generic;
 
 namespace eBike.Services.Users
 {
@@ -10,7 +9,7 @@ namespace eBike.Services.Users
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public List<UserGarage> Garage { get; set; }
+        public UserGarage Garage { get; set; }
     };
 
     public class UserGarage

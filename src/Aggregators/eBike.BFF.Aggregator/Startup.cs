@@ -1,3 +1,4 @@
+using eBike.BFF.Aggregator.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace eBike.BFF.Aggregator
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "eBike.BFF.Aggregator", Version = "v1" });
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,11 +37,13 @@ namespace eBike.BFF.Aggregator
             }
 
             app.UseRouting();
-
+            app.UseCloudEvents();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/notification");
+                endpoints.MapSubscribeHandler();
             });
         }
     }

@@ -1,0 +1,79 @@
+﻿@page "/bike-reader"
+@using System.Net.Http.Json
+@using eBike.Web.Data
+@using Dapr.Client
+@inject IJSRuntime jsRuntime
+
+<h1>eBike</h1>
+
+<EditForm OnSubmit="@SubmitAsync" class="form" Model="Model">
+    <h3>User ID - Find</h3>
+    <div class="form-group">
+        <label for="user-id">User Id:</label>
+        <InputText @bind-Value="@Model.User.UserId" DisplayName="User Id" id="user-id" class="form-control"></InputText>
+    </div>
+    <div class="row">
+          <button type="submit" class="btn btn-primary">Confirm</button>  
+    </div>
+<hr />
+
+@if (!string.IsNullOrEmpty(Model.User.Name)) {
+    <div class="row">
+        <div class="col">
+            <h3>User</h3>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <InputText @bind-Value="@Model.User.Name" DisplayName="Name" id="name" class="form-control"></InputText>
+            </div>
+             <div class="form-group">
+                <label for="surname">Surname:</label>
+                <InputText @bind-Value="@Model.User.Surname" DisplayName="Surname" id="surname" class="form-control"></InputText>
+            </div>
+        </div>
+    </div>
+}
+</EditForm>
+
+@if (Model.Bikes.Any()) {
+    <table>
+        <thead>
+            <tr>
+                <th>Bike Name</th>
+                <th>Bike Latitude</th>
+                <th>Bike Longitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var b in Model.Bikes) {
+                <tr>
+                    <td>@b.Name</td>
+                    <td>@b.Latitude</td>
+                    <td>@b.Longitude</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+@code {
+    [Inject]
+    public DaprClient DaprClient { get; set; }
+    public UserReadViewModel Model { get; set; } = new UserReadViewModel();
+
+    public async Task SubmitAsync ()
+    {
+        var appIdAggregator = Environment.GetEnvironmentVariable("APPID_AGGREGATOR");
+        try 
+        {
+            var response = await DaprClient.InvokeMethodAsync<UserReadViewModel>(HttpMethod.Get, appIdAggregator, $"/v1/Bikes/{Model.User.UserId}");
+            if(response != null) {
+                Model = response;
+                this.StateHasChanged();
+            }
+        }
+        catch(Exception ex) {
+            
+        }
+    }
+}

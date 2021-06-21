@@ -4,6 +4,7 @@ namespace eBike.Web.Data
 {
     public class BikeViewModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
@@ -32,4 +33,6 @@ namespace eBike.Web.Data
     }
 
     public record AggregatorResponseUserBike (string UserId, string BikeId);
+
+    public record AggregatorBikes (string Country, int Count);
 }
