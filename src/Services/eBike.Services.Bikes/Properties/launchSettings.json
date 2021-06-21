@@ -12,7 +12,8 @@
             "commandName": "Docker",
             "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
             "publishAllPorts": true,
-            "useSSL": true
+            "useSSL": false,
+            "applicationUrl": "http://localhost:5000"
         }
     }
 }

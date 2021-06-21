@@ -25,10 +25,11 @@ namespace eBike.Services.Bikes.Services
             this.bikeCollection = bikeCollection ?? throw new System.ArgumentNullException(nameof(bikeCollection));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Mantain Standard Behaviour")]
         private async Task<BikeReply> CreateOrUpdate (BikeRequest request, ServerCallContext context)
         {
-            var bikeId = Guid.Parse(request.BikeId);
+            if (!Guid.TryParse(request.BikeId, out var bikeId))
+                bikeId = Guid.NewGuid();
 
             var exists = await bikeCollection.CountDocumentsAsync(t => t.Id == bikeId);
 
@@ -75,12 +76,12 @@ namespace eBike.Services.Bikes.Services
 
         public override Task<ListTopicSubscriptionsResponse> ListTopicSubscriptions (Empty request, ServerCallContext context)
         {
-            return base.ListTopicSubscriptions(request, context);
+            return Task.FromResult(new ListTopicSubscriptionsResponse());
         }
 
         public override Task<TopicEventResponse> OnTopicEvent (TopicEventRequest request, ServerCallContext context)
         {
-            return base.OnTopicEvent(request, context);
+            return Task.FromResult(new TopicEventResponse());
         }
     }
 }

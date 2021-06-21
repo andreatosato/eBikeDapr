@@ -75,8 +75,9 @@ services:
         network_mode: "service:ebike.service.bikes" # stessa rete del container da dapperizzare
         command: ["./daprd",
             "-app-id", "${APPID_BIKES}",
-            "-app-port", "5050",
+            "-app-port", "80",
             "--log-level", "debug",
+            "--app-protocol", "grpc",
             "-components-path", "/components",
             "-config", "/configurations/config.yaml"
           ]
@@ -175,7 +176,9 @@ services:
           MONGO_INITDB_ROOT_PASSWORD: daprPassword
         ports:
         - 27017:27017
-        restart: always
+        restart: unless-stopped
+        volumes:
+            - ./mongodb/database:/data/db
 # Services
 
 # Observability

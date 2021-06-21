@@ -6,31 +6,48 @@
 @using BrowserInterop.Extensions
 @using BrowserInterop.Geolocation
 
-<h3>eBike</h3>
+<h1>eBike</h1>
 
 <EditForm OnSubmit="@SubmitAsync" class="form" Model="Model">
+    <h3>User ID - Find</h3>
     <div class="form-group">
-        <label for="name">Name:</label>
-        <InputText @bind-Value="@Model.User.Name" DisplayName="Name" id="name"></InputText>
+        <label for="user-id">User Id:</label>
+        <InputText @bind-Value="@Model.User.UserId" DisplayName="User Id" id="user-id" @onchange="@OnUserIdChanged"></InputText>
     </div>
-     <div class="form-group">
-        <label for="surname">Surname:</label>
-        <InputText @bind-Value="@Model.User.Surname" DisplayName="Surname" id="surname"></InputText>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col">
+            <h3>User</h3>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <InputText @bind-Value="@Model.User.Name" DisplayName="Name" id="name"></InputText>
+            </div>
+             <div class="form-group">
+                <label for="surname">Surname:</label>
+                <InputText @bind-Value="@Model.User.Surname" DisplayName="Surname" id="surname"></InputText>
+            </div>
+        </div>
+        <div class="col">
+            <h3>Bike</h3>
+            <div class="form-group">
+                <label for="bike-name">Name:</label>
+                <InputText @bind-Value="@Model.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
+            </div>
+            <div class="form-group">
+                <label for="bike-latitude">Latitude:</label>
+                <InputNumber @bind-Value="@Model.Bike.Latitude" DisplayName="Bike Latitude" id="bike-latitude"></InputNumber>
+            </div>
+            <div class="form-group">
+                <label for="bike-longitude">Longitude:</label>
+                <InputNumber @bind-Value="@Model.Bike.Longitude" DisplayName="Bike Longitude" id="bike-longitude"></InputNumber>
+            </div>
+        </div>
     </div>
-    <divider></divider>
-    <div class="form-group">
-        <label for="bike-name">Bike Name:</label>
-        <InputText @bind-Value="@Model.Bike.Name" DisplayName="Bike Name" id="bike-name"></InputText>
+    <div class="row">
+          <button type="submit" class="btn btn-primary">Confirm</button>  
     </div>
-    <div class="form-group">
-        <label for="bike-latitude">Bike Latitude:</label>
-        <InputNumber @bind-Value="@Model.Bike.Latitude" DisplayName="Bike Latitude" id="bike-latitude"></InputNumber>
-    </div>
-    <div class="form-group">
-        <label for="bike-longitude">Bike Longitude:</label>
-        <InputNumber @bind-Value="@Model.Bike.Longitude" DisplayName="Bike Longitude" id="bike-longitude"></InputNumber>
-    </div>
-    <button type="submit" class="btn btn-primary">Confirm</button>
 </EditForm>
 
 @code {
@@ -72,7 +89,13 @@
         var response = await DaprClient.InvokeMethodWithResponseAsync(request);
         if (response.IsSuccessStatusCode) {
             var r = await response.Content.ReadFromJsonAsync<AggregatorResponseUserBike>();
-            Model.User.UserId = Guid.Parse(r.UserId);     
+            Model.User.UserId = r.UserId; 
+            this.StateHasChanged();
         }
+    }
+
+    public async Task OnUserIdChanged (ChangeEventArgs changeEventArgs)
+    {
+        var userId = changeEventArgs.Value;
     }
 }
