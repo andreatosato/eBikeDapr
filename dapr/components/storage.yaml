@@ -1,0 +1,17 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: exportaggregator-binding
+  namespace: default
+spec:
+  type: bindings.azure.blobstorage
+  version: v1
+  metadata:
+  - name: storageAccount
+    value: communitydays2021
+  - name: storageAccessKey
+    value: bPX7NvQLgqx84x+THUgeLy2giqljplo5yo2d3LhZ/o6RKE8COQTE/ASKEUPfyPTwH53tyTcJZrnIDWvCRpRXMg==
+  - name: container
+    value: exportaggregator
+  - name: decodeBase64
+    value: false

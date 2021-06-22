@@ -37,7 +37,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{A03A8CC4-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{F0C0E4F3-49EB-4E96-86F7-571D1B45A21A}"
 	ProjectSection(SolutionItems) = preProject
-		dapr\components\redis.yaml = dapr\components\redis.yaml
+		dapr\components\bike-pubsub.yaml = dapr\components\bike-pubsub.yaml
+		dapr\components\cron.yaml = dapr\components\cron.yaml
+		dapr\components\storage.yaml = dapr\components\storage.yaml
+		dapr\components\user-state.yaml = dapr\components\user-state.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DDE1A6D9-B14E-4360-9940-6F9586F8999A}"
@@ -45,6 +48,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{FF30F5B2-5539-41E7-8C69-FB59DF942223}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.Workers.Processing.Tests", "tests\eBike.Workers.Processing.Tests\eBike.Workers.Processing.Tests.csproj", "{EDD34F27-AC39-4F0F-86D9-D9350927B783}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBike.Worker.Cron.Processing", "src\Workers\eBike.Worker.Cron.Processing\eBike.Worker.Cron.Processing.csproj", "{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +89,10 @@ Global
 		{EDD34F27-AC39-4F0F-86D9-D9350927B783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDD34F27-AC39-4F0F-86D9-D9350927B783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDD34F27-AC39-4F0F-86D9-D9350927B783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +107,7 @@ Global
 		{F0C0E4F3-49EB-4E96-86F7-571D1B45A21A} = {A03A8CC4-7C9D-4F19-A624-7C33FDB401B4}
 		{FF30F5B2-5539-41E7-8C69-FB59DF942223} = {DDE1A6D9-B14E-4360-9940-6F9586F8999A}
 		{EDD34F27-AC39-4F0F-86D9-D9350927B783} = {FF30F5B2-5539-41E7-8C69-FB59DF942223}
+		{1CD58E49-C018-4DD4-9031-A1E7DA6BC5F4} = {5176A140-6AB7-40F3-8C62-D0D625C02B0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9672F594-EA85-4A14-B2F9-408BF5F15022}

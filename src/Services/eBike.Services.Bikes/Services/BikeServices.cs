@@ -73,19 +73,22 @@ namespace eBike.Services.Bikes.Services
 
         private async Task<UserBikesResponse> ByUser (UserRequest request, ServerCallContext context)
         {
-            var bikes = await bikeCollection.FindAsync(t => t.UserId == Guid.Parse(request.UserId));
-            var response = new UserBikesResponse();
-            foreach (var b in await bikes.ToListAsync()) {
-                var userBike = new UserBikeResponse {
-                    UserId = request.UserId,
-                    BikeId = b.Id.ToString(),
-                    Name = b.Name,
-                    Latitude = b.Latitude,
-                    Longitude = b.Longitude
-                };
-                response.Response.Add(userBike);
+            if (Guid.TryParse(request.UserId, out var uId)) {
+                var bikes = await bikeCollection.FindAsync<BikeEntity>(t => t.UserId == uId);
+                var response = new UserBikesResponse();
+                foreach (var b in await bikes.ToListAsync()) {
+                    var userBike = new UserBikeResponse {
+                        UserId = request.UserId,
+                        BikeId = b.Id.ToString(),
+                        Name = b.Name,
+                        Latitude = b.Latitude,
+                        Longitude = b.Longitude
+                    };
+                    response.Response.Add(userBike);
+                }
+                return response;
             }
-            return response;
+            return null;
         }
 
         private async Task<BikeAggregatorsResponse> BikeAggregator (ServerCallContext context)
@@ -136,6 +139,16 @@ namespace eBike.Services.Bikes.Services
         public override Task<TopicEventResponse> OnTopicEvent (TopicEventRequest request, ServerCallContext context)
         {
             return Task.FromResult(new TopicEventResponse());
+        }
+
+        public override Task<ListInputBindingsResponse> ListInputBindings (Empty request, ServerCallContext context)
+        {
+            return Task.FromResult(new ListInputBindingsResponse());
+        }
+
+        public override Task<BindingEventResponse> OnBindingEvent (BindingEventRequest request, ServerCallContext context)
+        {
+            return Task.FromResult(new BindingEventResponse());
         }
     }
 }

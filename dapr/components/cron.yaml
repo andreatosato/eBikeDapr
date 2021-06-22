@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: scheduleJob
+  namespace: default
+spec:
+  type: bindings.cron
+  version: v1
+  metadata:
+  - name: schedule
+    value: "0/30 * * * * *" # Ogni 30 secondi #https://docs.dapr.io/reference/components-reference/supported-bindings/cron/

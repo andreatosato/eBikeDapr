@@ -10,7 +10,7 @@ services:
         - ebike.aggregator.bff
         - ebike.service.bikes
         - ebike.service.users
-        - ebike.worker.processing
+        - ebike.worker.cron.processing
 
     ebike.aggregator.bff:
         container_name: ebike.aggregator.bff
@@ -43,15 +43,26 @@ services:
             PUBSUB_NAME: ${PUBSUB_NAME}
             USER_STATE_NAME: ${USER_STATE_NAME}
 
-    ebike.worker.processing:
-        container_name: ebike.worker.processing
-        image: ${ROOT_REGISTRY}/ebike.worker.processing
+    #ebike.worker.processing:
+    #    container_name: ebike.worker.processing
+    #    image: ${ROOT_REGISTRY}/ebike.worker.processing
+    #    build:
+    #        context: .
+    #        dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile
+    #    environment:
+    #        ConnectionString : ${MONGO_CONNECTIONSTRING}
+    #        AZURE_MAPS_KEY: ${AZURE_MAPS_KEY}
+
+    ebike.worker.cron.processing:
+        container_name: ebike.worker.cron.processing
+        image: ${ROOT_REGISTRY}/ebike.worker.cron.processing
         build:
             context: .
-            dockerfile: src/Workers/eBike.Workers.Processing/Dockerfile
+            dockerfile: src/Workers/eBike.Worker.Cron.Processing/Dockerfile
         environment:
             ConnectionString : ${MONGO_CONNECTIONSTRING}
             AZURE_MAPS_KEY: ${AZURE_MAPS_KEY}
+            PUBSUB_NAME: ${PUBSUB_NAME}
 # App
 
 # Container Dapperizzati
@@ -122,12 +133,34 @@ services:
               cpus: '0.50'
               memory: 100M
 
-    ebike.worker.processing-dapr:
-        container_name: ebike.worker.processing-dapr
+    #ebike.worker.processing-dapr:
+    #    container_name: ebike.worker.processing-dapr
+    #    image: "daprio/daprd:${DAPRD_TAG}"
+    #    network_mode: "service:ebike.worker.processing" # stessa rete del container da dapperizzare
+    #    command: ["./daprd",
+    #        "-app-id", "${APPID_PROCESSING}",
+    #        "-app-port", "80",
+    #        "--log-level", "debug",
+    #        "-components-path", "/components",
+    #        "-config", "/configurations/config.yaml"
+    #      ]
+    #    volumes:
+    #        - "${DAPR_COMPONENTS_FOLDER}:/components"
+    #        - "./dapr/configurations/:/configurations"
+    #    depends_on:
+    #        - ebike.worker.processing
+    #    deploy:
+    #      resources:
+    #        limits:
+    #          cpus: '0.50'
+    #          memory: 100M
+
+    ebike.worker.cron.processing-dapr:
+        container_name: ebike.worker.cron.processing-dapr
         image: "daprio/daprd:${DAPRD_TAG}"
-        network_mode: "service:ebike.worker.processing" # stessa rete del container da dapperizzare
+        network_mode: "service:ebike.worker.cron.processing" # stessa rete del container da dapperizzare
         command: ["./daprd",
-            "-app-id", "${APPID_PROCESSING}",
+            "-app-id", "${APPID_CRON_PROCESSING}",
             "-app-port", "80",
             "--log-level", "debug",
             "-components-path", "/components",
@@ -137,7 +170,7 @@ services:
             - "${DAPR_COMPONENTS_FOLDER}:/components"
             - "./dapr/configurations/:/configurations"
         depends_on:
-            - ebike.worker.processing
+            - ebike.worker.cron.processing
         deploy:
           resources:
             limits:

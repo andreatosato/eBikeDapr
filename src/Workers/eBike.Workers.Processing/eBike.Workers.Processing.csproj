@@ -5,6 +5,7 @@
     <UserSecretsId>dotnet-eBike.Workers.Processing-B3F71FE1-0C72-460F-8736-91D6DD620E2B</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+	  <LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
