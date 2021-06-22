@@ -1,4 +1,6 @@
-﻿using eBike.Workers.Processing.Entities;
+﻿using Dapr.Client;
+using eBike.Commons.Events;
+using eBike.Workers.Processing.Entities;
 using MongoDB.Driver;
 using System;
 using System.Linq;
@@ -13,14 +15,21 @@ namespace eBike.Workers.Processing
         private readonly HttpClient httpClient;
         private readonly IMongoCollection<BikeEntity> bikeCollection;
         private readonly IMongoCollection<BikeAggregation> bikeAggregationCollection;
+        private readonly DaprClient daprClient;
 
         public AggregateBikesCalculator (IHttpClientFactory httpClientFactory,
             IMongoCollection<BikeEntity> bikeCollection,
-            IMongoCollection<BikeAggregation> bikeAggregationCollection)
+            IMongoCollection<BikeAggregation> bikeAggregationCollection,
+            DaprClient daprClient)
         {
+            if (httpClientFactory is null) {
+                throw new ArgumentNullException(nameof(httpClientFactory));
+            }
+
             httpClient = httpClientFactory.CreateClient("AzureMaps");
-            this.bikeCollection = bikeCollection;
-            this.bikeAggregationCollection = bikeAggregationCollection;
+            this.bikeCollection = bikeCollection ?? throw new ArgumentNullException(nameof(bikeCollection));
+            this.bikeAggregationCollection = bikeAggregationCollection ?? throw new ArgumentNullException(nameof(bikeAggregationCollection));
+            this.daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
         }
 
         public async Task ExecuteAsync ()
@@ -50,6 +59,14 @@ namespace eBike.Workers.Processing
                     IsUpsert = true
                 };
                 await bikeAggregationCollection.FindOneAndReplaceAsync<BikeAggregation>(t => t.Country == c.Country, c, options);
+
+                await daprClient.PublishEventAsync(
+                   Environment.GetEnvironmentVariable("PUBSUB_NAME"),
+                   "bike-aggregator",
+                   new BikeAggregatorEvent {
+                       Country = c.Country,
+                       EventDate = DateTime.UtcNow
+                   });
             }
         }
 

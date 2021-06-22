@@ -6,6 +6,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Workers/eBike.Workers.Processing/eBike.Workers.Processing.csproj", "src/Workers/eBike.Workers.Processing/"]
+COPY ["src/Commons/eBike.Commons/eBike.Commons.csproj", "src/Commons/eBike.Commons/"]
 RUN dotnet restore "src/Workers/eBike.Workers.Processing/eBike.Workers.Processing.csproj"
 COPY . .
 WORKDIR "/src/src/Workers/eBike.Workers.Processing"

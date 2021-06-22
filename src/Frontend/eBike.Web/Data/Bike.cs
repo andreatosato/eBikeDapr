@@ -29,7 +29,7 @@ namespace eBike.Web.Data
 
     public class UserReadViewModel : BaseViewModel
     {
-        public List<BikeViewModel> Bikes { get; set; } = new();
+        public List<BikeViewModel> Garage { get; set; } = new();
     }
 
     public record AggregatorResponseUserBike (string UserId, string BikeId);

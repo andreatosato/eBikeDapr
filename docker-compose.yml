@@ -6,6 +6,11 @@ services:
         build:
           context: .
           dockerfile: src/Frontend/eBike.Web/Dockerfile
+        depends_on:
+        - ebike.aggregator.bff
+        - ebike.service.bikes
+        - ebike.service.users
+        - ebike.worker.processing
 
     ebike.aggregator.bff:
         container_name: ebike.aggregator.bff

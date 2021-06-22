@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Aggregators/eBike.BFF.Aggregator/eBike.BFF.Aggregator.csproj", "src/Aggregators/eBike.BFF.Aggregator/"]
+COPY ["src/Commons/eBike.Commons/eBike.Commons.csproj", "src/Commons/eBike.Commons/"]
 RUN dotnet restore "src/Aggregators/eBike.BFF.Aggregator/eBike.BFF.Aggregator.csproj"
 COPY . .
 WORKDIR "/src/src/Aggregators/eBike.BFF.Aggregator"

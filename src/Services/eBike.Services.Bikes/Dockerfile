@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Services/eBike.Services.Bikes/eBike.Services.Bikes.csproj", "src/Services/eBike.Services.Bikes/"]
+COPY ["src/Commons/eBike.Commons/eBike.Commons.csproj", "src/Commons/eBike.Commons/"]
 RUN dotnet restore "src/Services/eBike.Services.Bikes/eBike.Services.Bikes.csproj"
 COPY . .
 WORKDIR "/src/src/Services/eBike.Services.Bikes"

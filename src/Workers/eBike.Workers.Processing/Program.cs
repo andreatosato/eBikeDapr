@@ -26,6 +26,7 @@ namespace eBike.Workers.Processing
                         var client = new MongoClient(Environment.GetEnvironmentVariable("ConnectionString"));
                         return client.GetDatabase("Bikes").GetCollection<BikeAggregation>("BikesAggregateCollection");
                     });
+                    services.AddDaprClient();
 
                     services.AddScoped<AggregateBikesCalculator>();
                 });

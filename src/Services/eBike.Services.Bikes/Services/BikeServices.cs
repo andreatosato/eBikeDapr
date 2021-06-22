@@ -95,8 +95,14 @@ namespace eBike.Services.Bikes.Services
 
             foreach (var b in bikeAggregator) {
                 response.Countries.Add(new BikeAggregatorResponse() { Country = b.Country, Count = b.Count });
+                await daprClient.PublishEventAsync(
+                   Environment.GetEnvironmentVariable("PUBSUB_NAME"),
+                   "bike-aggregator-reader",
+                   new BikeAggregatorEvent {
+                       Country = b.Country,
+                       EventDate = DateTime.UtcNow
+                   });
             }
-
             return response;
         }
 

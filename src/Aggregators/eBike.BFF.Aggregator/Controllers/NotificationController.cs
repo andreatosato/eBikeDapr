@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace eBike.BFF.Aggregator.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class NotificationController : ControllerBase
     {
@@ -29,6 +29,7 @@ namespace eBike.BFF.Aggregator.Controllers
             return Ok();
         }
 
+        // https://github.com/dapr/dotnet-sdk/commit/a65e8b287d4c48f93952221cb1c6a1b1346ece26
         [HttpPost("user-update")]
         [Topic("bike-pubsub", "user-update")]
         public async Task<IActionResult> PostUserUpdate (UserEvent newUser)

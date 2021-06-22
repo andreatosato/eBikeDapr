@@ -2,16 +2,17 @@
 @using eBike.Commons.Events
 <h3>NotificationComponent</h3>
 
-
-@if (Events.Count > 0)
+<h5>Bike Events</h5>
+@if (BikeEvents.Count > 0)
 {
     <table class="table">
-        @foreach (var e in Events)
+        @foreach (var e in BikeEvents)
         {
             <tr>
-                <td>@(e.Id)</td>
+                <td><small>@(e.EventDate)</small></td>
+                <td><small>@(e.Id)</small></td>
                 <td>@(e.Name)</td>
-                <td>@(e.Status)</td>
+                <td><small>@(e.Status)</small></td>
                 <td>@(e.Latitude)</td>
                 <td>@(e.Longitude)</td>
             </tr>
@@ -19,9 +20,26 @@
     </table>
 }
 
+<hr />
+<h5>User Events</h5>
+@if (UserEvents.Count > 0)
+{
+    <table class="table">
+        @foreach (var e in UserEvents)
+        {
+            <tr>
+                <td><small>@(e.EventDate)</small></td>
+                <td><small>@(e.Id)</small></td>
+                <td>@(e.Name)</td>
+                <td>@(e.Surname)</td>
+            </tr>
+        }
+    </table>
+}
+
 @code {
 
-    public List<BikeEvent> Events { get; set; } = new List<BikeEvent>();
+    public List<BikeEvent> BikeEvents { get; set; } = new List<BikeEvent>();
     public List<UserEvent> UserEvents { get; set; } = new List<UserEvent>();
     protected override async Task OnInitializedAsync()
     {
@@ -38,7 +56,7 @@
 
     private void OnBikeStatus(BikeEvent @event)
     {
-        Events.Add(@event);
+        BikeEvents.Add(@event);
         StateHasChanged();
     }
 

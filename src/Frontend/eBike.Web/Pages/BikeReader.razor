@@ -34,17 +34,17 @@
 }
 </EditForm>
 
-@if (Model.Bikes.Any()) {
-    <table>
+@if (Model.Garage.Any()) {
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Bike Name</th>
-                <th>Bike Latitude</th>
-                <th>Bike Longitude</th>
+                <th>Name</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var b in Model.Bikes) {
+             @foreach(var b in Model.Garage) {
                 <tr>
                     <td>@b.Name</td>
                     <td>@b.Latitude</td>

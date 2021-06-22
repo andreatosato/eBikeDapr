@@ -1,3 +1,4 @@
+using Dapr.Client;
 using eBike.Workers.Processing.Entities;
 using MongoDB.Driver;
 using Moq;
@@ -36,7 +37,8 @@ namespace eBike.Workers.Processing.Tests
                     new FindOneAndReplaceOptions<BikeEntity, BikeEntity>() { IsUpsert = true });
             }
 
-            var aggregateBikes = new AggregateBikesCalculator(mockHttpClientFactory.Object, bikeEntityCollection, bikeEntityAggregatorCollection);
+            var daprClientTest = new DaprClientBuilder().Build();
+            var aggregateBikes = new AggregateBikesCalculator(mockHttpClientFactory.Object, bikeEntityCollection, bikeEntityAggregatorCollection, daprClientTest);
             Environment.SetEnvironmentVariable("AZURE_MAPS_KEY", "o4EHaprfguQb4eHiS7GMPPjbKn6GmZQtIa6_h_l_CIw");
             await aggregateBikes.ExecuteAsync();
         }
@@ -51,7 +53,8 @@ namespace eBike.Workers.Processing.Tests
             var bileEntityCollection = client.GetDatabase("Bikes").GetCollection<BikeEntity>("BikesCollection");
             var bikeEntityAggregatorCollection = client.GetDatabase("Bikes").GetCollection<BikeAggregation>("BikesAggregateCollection");
 
-            var aggregateBikes = new AggregateBikesCalculator(mockHttpClientFactory.Object, bileEntityCollection, bikeEntityAggregatorCollection);
+            var daprClientTest = new DaprClientBuilder().Build();
+            var aggregateBikes = new AggregateBikesCalculator(mockHttpClientFactory.Object, bileEntityCollection, bikeEntityAggregatorCollection, daprClientTest);
             Environment.SetEnvironmentVariable("AZURE_MAPS_KEY", "o4EHaprfguQb4eHiS7GMPPjbKn6GmZQtIa6_h_l_CIw");
             var r = await aggregateBikes.GetAddressAsync(45.3946377d, 10.9195844d);
         }
